@@ -34,8 +34,8 @@ def main():
 
 
 def is_digit(char):
-    # digits 40 = 0 through 57 = 9
-    if 40 <= ord(char) <= 57:
+    # digits 48 = 0 through 57 = 9
+    if 48 <= ord(char) <= 57:
         return True
     return False
 
