@@ -52,26 +52,9 @@ def get_number(s):
         "eight": 8,
         "nine": 9
     }
-    if 'one' in s:
-        return 1
-    if 'two' in s:
-        return 2
-    if 'three' in s:
-        return 3
-    if 'four' in s:
-        return 4
-    if 'five' in s:
-        return 5
-    if 'six' in s:
-        return 6
-    if 'seven' in s:
-        return 7
-    if 'eight' in s:
-        return 8
-    if 'nine' in s:
-        return 9
-    if 'zero' in s:
-        return 0
+    for key in digits.keys():
+        if key in s:
+            return digits[key]
     return False
 
 
