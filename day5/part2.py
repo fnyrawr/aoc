@@ -1,7 +1,3 @@
-import concurrent.futures
-import sys
-
-
 def main():
     textfile = 'input.txt'
     with open(textfile, 'r') as file:
@@ -77,43 +73,45 @@ def main():
     maps = {'soil': soil_map, 'fertilizer': fertilizer_map, 'water': water_map, 'light': light_map,
             'temperature': temperature_map, 'humidity': humidity_map, 'location': location_map}
 
-    # map seeds to location
-    best_location = sys.maxsize
-    for i in range(int(len(seeds)/2)):
-        start_range = seeds[i*2]
-        end_range = start_range + seeds[i*2+1]
-        iterations = end_range-start_range
-        print('searching best location in range {} to {} ({} iterations)'.format(start_range, end_range, iterations))
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            for seed in range(start_range, end_range):
-                future = executor.submit(get_location, seed=seed, maps=maps)
-                best_location = min(best_location, future.result())
+    # get lowest location for seed in range
+    seed_found = False
+    location = 0
+    while not seed_found:
+        seed = get_seed(location, maps)
+        for i in range(int(len(seeds) / 2)):
+            start_range = seeds[i * 2]
+            end_range = start_range + seeds[i * 2 + 1]
+            if start_range <= seed <= end_range:
+                seed_found = True
+        if not seed_found:
+            location += 1
 
-    print('Best location: ' + str(best_location))
+    print('Best location: ' + str(location))
 
 
-def get_location(seed, maps):
-    # map soil
-    soil = get_mapping(seed, maps['soil'])
-    # map fertilizer
-    fertilizer = get_mapping(soil, maps['fertilizer'])
-    # map water
-    water = get_mapping(fertilizer, maps['water'])
-    # map light
-    light = get_mapping(water, maps['light'])
-    # map temperature
-    temperature = get_mapping(light, maps['temperature'])
+def get_seed(location, maps):
     # map humidity
-    humidity = get_mapping(temperature, maps['humidity'])
-    # map location
-    return get_mapping(humidity, maps['location'])
+    humidity = get_reverse_mapping(location, maps['location'])
+    # map temperature
+    temperature = get_reverse_mapping(humidity, maps['humidity'])
+    # map light
+    light = get_reverse_mapping(temperature, maps['temperature'])
+    # map water
+    water = get_reverse_mapping(light, maps['light'])
+    # map fertilizer
+    fertilizer = get_reverse_mapping(water, maps['water'])
+    # map soil
+    soil = get_reverse_mapping(fertilizer, maps['fertilizer'])
+    # map seed
+    return get_reverse_mapping(soil, maps['soil'])
 
 
-def get_mapping(seed, map_pattern):
+def get_reverse_mapping(location, map_pattern):
     for pattern in map_pattern:
-        if (seed >= map_pattern[pattern]['start']) and (seed < map_pattern[pattern]['end']):
-            return (seed - map_pattern[pattern]['start']) + map_pattern[pattern]['dest']
-    return seed
+        if (location >= map_pattern[pattern]['dest'])\
+                and (location < map_pattern[pattern]['dest'] + (map_pattern[pattern]['end'] - map_pattern[pattern]['start'])):
+            return (location - map_pattern[pattern]['dest']) + map_pattern[pattern]['start']
+    return location
 
 
 if __name__ == '__main__':
