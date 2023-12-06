@@ -1,3 +1,6 @@
+from math import floor, ceil, sqrt
+
+
 def main():
     textfile = 'input.txt'
     with open(textfile, 'r') as file:
@@ -18,10 +21,9 @@ def main():
     print('Distance: {}'.format(distance))
 
     # get combinations
-    combinations = 0
-    for k in range(0, time):
-        if (time - k) * k > distance:
-            combinations += 1
+    b1 = floor((time + sqrt(time * time - 4 * (distance + 1))) / 2)
+    b2 = ceil((time - sqrt(time * time - 4 * (distance + 1))) / 2)
+    combinations = (b1 - b2 + 1)
 
     print('Combinations total: {}'.format(combinations))
 

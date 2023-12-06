@@ -1,3 +1,6 @@
+from math import floor, ceil, sqrt
+
+
 def main():
     textfile = 'input.txt'
     with open(textfile, 'r') as file:
@@ -17,12 +20,11 @@ def main():
 
     # for each race
     total_combinations = 1
+
     for i in range(0, len(times)):
-        combinations = 0
-        for k in range(0, times[i]):
-            if (times[i] - k)*k > distances[i]:
-                combinations += 1
-        total_combinations *= combinations
+        b1 = floor((times[i] + sqrt(times[i] * times[i] - 4 * (distances[i] + 1)))/2)
+        b2 = ceil((times[i] - sqrt(times[i] * times[i] - 4 * (distances[i] + 1))) / 2)
+        total_combinations *= (b1 - b2 + 1)
 
     print('Combinations total: {}'.format(total_combinations))
 
