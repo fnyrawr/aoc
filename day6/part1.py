@@ -2,7 +2,7 @@ from math import floor, ceil, sqrt
 
 
 def main():
-    textfile = 'input.txt'
+    textfile = 'test_input.txt.txt'
     with open(textfile, 'r') as file:
         lines = file.readlines()
     # parse times

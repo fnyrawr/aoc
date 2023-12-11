@@ -1,7 +1,7 @@
 import math
 
 def main():
-    textfile = 'input.txt'
+    textfile = 'test_input.txt.txt'
     with open(textfile, 'r') as file:
         lines = file.readlines()
     instructions = [x for x in lines[0] if x != '\n']

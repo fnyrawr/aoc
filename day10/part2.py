@@ -8,7 +8,7 @@
 
 
 def main():
-    textfile = 'input.txt'
+    textfile = 'test_input.txt.txt'
     with open(textfile, 'r') as file:
         lines = file.readlines()
     lines = [x.replace('\n', '') for x in lines]  # remove newlines
