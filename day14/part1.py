@@ -1,14 +1,9 @@
 def main():
     textfile = 'input.txt'
     with open(textfile, 'r') as file:
-        lines = file.readlines()
-    for i in range(len(lines)):
-        if '\n' in lines[i]:  # remove newline characters
-            lines[i] = lines[i][:len(lines[i]) - 1]
+        lines = [line.rstrip('\n') for line in file.readlines()]
 
-    platform = {}
-    platform['h'] = len(lines)
-    platform['w'] = len(lines[0])
+    platform = {'h': len(lines), 'w': len(lines[0])}
     for i in range(len(lines)):
         for j in range(len(lines[i])):
             if lines[i][j] == '.':
