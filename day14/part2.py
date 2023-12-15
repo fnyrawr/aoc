@@ -13,9 +13,16 @@ def main():
             if lines[i][j] == '#':
                 platform[(i, j)] = 2
 
+    loads = {}  # load calculated containing array of cycles
     for i in range(100):
         spin_cycle(platform)
-    print('Total load: {}'.format(calculate_load(platform)))
+        load = calculate_load(platform)
+        if load not in loads:
+            loads[load] = []
+        loads[load].append(i)
+        print('cycles {:3} | load {:6}'.format(i+1, load))
+
+    print('Total load: {}'.format(load))
 
 
 def calculate_load(platform):
@@ -30,32 +37,32 @@ def calculate_load(platform):
 
 def spin_cycle(platform):
     # tilt up
-    for n in range(platform['h']-1):
+    for n in range(platform['h'] - 1):
         for i in range(1, platform['h']):
             for j in range(platform['w']):
-                if (platform[(i, j)] == 1) and (platform[(i-1, j)]) == 0:
-                    platform[(i-1, j)] = 1
+                if (platform[(i, j)] == 1) and (platform[(i - 1, j)]) == 0:
+                    platform[(i - 1, j)] = 1
                     platform[(i, j)] = 0
     # tilt left
-    for n in range(platform['w']-1):
+    for n in range(platform['w'] - 1):
         for i in range(platform['h']):
             for j in range(1, platform['w']):
-                if (platform[(i, j)] == 1) and (platform[(i, j-1)]) == 0:
-                    platform[(i, j-1)] = 1
+                if (platform[(i, j)] == 1) and (platform[(i, j - 1)]) == 0:
+                    platform[(i, j - 1)] = 1
                     platform[(i, j)] = 0
     # tilt down
-    for n in range(platform['h']-1):
-       for i in range(platform['h']-1):
-           for j in range(platform['w']):
-               if (platform[(i, j)] == 1) and (platform[(i+1, j)]) == 0:
-                   platform[(i+1, j)] = 1
-                   platform[(i, j)] = 0
+    for n in range(platform['h'] - 1):
+        for i in range(platform['h'] - 1):
+            for j in range(platform['w']):
+                if (platform[(i, j)] == 1) and (platform[(i + 1, j)]) == 0:
+                    platform[(i + 1, j)] = 1
+                    platform[(i, j)] = 0
     # tilt right
-    for n in range(platform['w']-1):
+    for n in range(platform['w'] - 1):
         for i in range(platform['h']):
-            for j in range(platform['w']-1):
-                if (platform[(i, j)] == 1) and (platform[(i, j+1)]) == 0:
-                    platform[(i, j+1)] = 1
+            for j in range(platform['w'] - 1):
+                if (platform[(i, j)] == 1) and (platform[(i, j + 1)]) == 0:
+                    platform[(i, j + 1)] = 1
                     platform[(i, j)] = 0
 
 
