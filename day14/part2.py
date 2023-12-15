@@ -12,17 +12,26 @@ def main():
                 platform[(i, j)] = 1
             if lines[i][j] == '#':
                 platform[(i, j)] = 2
+    init_platform = platform
 
-    loads = {}  # load calculated containing array of cycles
-    for i in range(100):
-        spin_cycle(platform)
-        load = calculate_load(platform)
-        if load not in loads:
-            loads[load] = []
-        loads[load].append(i)
-        print('cycles {:3} | load {:6}'.format(i+1, load))
+    formations = {}
+    total = 1000000000
+    num_to_run = 0
+    for i in range(total):
+        platform = spin_cycle(platform)
+        formation = str(platform)
+        if formation not in formations:
+            formations[formation] = i
+        else:
+            period = i - formations[formation]
+            num_to_run = (total - (i+1)) % period
+            formations[formation] = i
+            break
 
-    print('Total load: {}'.format(load))
+    for i in range(num_to_run):
+         platform = spin_cycle(init_platform)
+
+    print('Total load: {}'.format(calculate_load(platform)))
 
 
 def calculate_load(platform):
@@ -64,6 +73,7 @@ def spin_cycle(platform):
                 if (platform[(i, j)] == 1) and (platform[(i, j + 1)]) == 0:
                     platform[(i, j + 1)] = 1
                     platform[(i, j)] = 0
+    return platform
 
 
 def visualize_platform(platform):
