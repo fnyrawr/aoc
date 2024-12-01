@@ -6,6 +6,7 @@ def main():
     sum_values = 0  # sum
     left_list = []  # list left side
     right_list = []  # list right side
+    num_counts = {}  # dict of number occurences
 
     for line in lines:
         s = line.replace('\n', '').split('   ')
@@ -14,11 +15,12 @@ def main():
     left_list.sort()
     right_list.sort()
 
-    def get_occur_count(y):
-        return len([x for x in right_list if x == y])
-
     for i in range(len(left_list)):
-        n = get_occur_count(left_list[i])
+        if left_list[i] in num_counts:
+            n = num_counts[left_list[i]]
+        else:
+            n = right_list.count(left_list[i])
+            num_counts[left_list[i]] = n
         z = n*left_list[i]
         sum_values += z
         print(f"Number {left_list[i]} occurs {n} times -> add {z} sum values: {sum_values}")
