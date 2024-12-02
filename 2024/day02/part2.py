@@ -36,11 +36,10 @@ def main():
             if k_removed:
                 msg += f' with level {k_removed} removed'
         else:
-            msg = f"--- report {levels_orig} is unsafe regardless of removed level ---"
+            msg = f"report {levels_orig} is unsafe regardless of removed level"
         msg += f" | count safe reports: {n_safe}"
         print(msg)
     print(f"{n_safe} safe reports found")
-    # > 548 needed | != 545, 554, 556, 558, 573
 
 
 if __name__ == '__main__':
